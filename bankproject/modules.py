@@ -5,6 +5,8 @@ from csv import writer
 from random import randint
 import getpass
 
+
+#---------------------------------------------------------------#
 # Onde é feita a escrita dos dados dentro do arquivo de clientes
 def escrevendo(users):
     with open('clientes.csv', 'w') as arquivo:
@@ -16,10 +18,10 @@ def escrevendo(users):
             escritor_cvs.writerow([i, nome, senha,rg,cpf,email,telefone,saldo])
     arquivo.close()
 #---------------------------------------------------------------#
+
+#---------------------------------------------------------------#
 # Onde é feita a leitura dos dados dentro do arquivo de clientes
 # Nesse código, ele pega as linhas do arquivo, e salva dentro de um dicionário
-
-
 def salvando(users):
     with open('clientes.csv') as arquivo:
         leitor_cvs = DictReader(arquivo, delimiter=',')
@@ -37,7 +39,8 @@ def salvando(users):
     arquivo.close()
 #---------------------------------------------------------------#
 
-
+#---------------------------------------------------------------#
+#Onde é realizado o cadastro
 def cadastrado(users):
     cadastrooff = 0
     print("Ao inserir seu CPF e o RG, não insira vírgulas")
@@ -58,15 +61,21 @@ def cadastrado(users):
         nomecadastro = input('Digite seu Nome: ')
         emailcadastro = input('Digite seu email: ')
         telefonecadastro = input('Digite seu telefone: ')
-        #Gerando numero e senha da conta
+        #-------------------------------------------------#
+        #Gerando numero e senha da conta aleatorios
         senhacadastro = randint(100000, 999999)
         c = randint(1000, 100000)
+        #-------------------------------------------------#
+        #Convertendo os numeros para str para encryptar
         senhaconvert = str(senhacadastro)
         cconvert = str(c)
+        #-------------------------------------------------#
+        #Realizando encryptação e salvando dentro de uma biblioteca
         print(f'Guarde o número da sua conta: {c}')
         print(f'Senha gerada: {senhacadastro}')
         cconvert = cryp.hash(cconvert, rounds=200000, salt_size = 16)
         senhaconvert = cryp.hash(senhaconvert, rounds=200000, salt_size = 16)
-        adicionar = {cconvert: (nomecadastro, senhaconvert, rgcadastro,cpfcadastro, emailcadastro, telefonecadastro, '0')}
+        adicionar = {cconvert: (nomecadastro, senhaconvert, rgcadastro,cpfcadastro, emailcadastro, telefonecadastro, 0.00)}
     
         users.update(adicionar)
+#---------------------------------------------------------------------------------------------------------------------------#
