@@ -1,2 +1,2 @@
-# pythonprojetos
-Repositório onde será adicionado os projetos feitos em Python
+# Python
+Repository where projects made in Python will be added. From simple projects to complex ones 
