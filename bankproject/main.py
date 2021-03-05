@@ -1,10 +1,12 @@
 #---------------------------------#
 #Criado por: Alexandre Douglas    #
 #Open Source!!                    #
+#Email: superb1991@academico.ufs.br #
 #---------------------------------#
 from passlib.hash import pbkdf2_sha256 as cryp
 import modules #Onde estão armazenado as classes e as funções
 from random import randint
+import os
 #---------------------------------------------------------------------------------------------------------#
 # Onde serão armazenados os dados cadastrados                                                             #
 #---------------------------------------------------------------------------------------------------------#
@@ -19,12 +21,14 @@ dados = {}                                                                      
 if __name__ == '__main__':
     modules.salvando(dados)
     while True:
+        modules.escrevendo(dados)
         print("1- Login")
         print("2- Cadastro")
         menu = int(input('Opção: '))
         if menu == 1:
             #DECLARAÇÃO DE ALGUMAS VARAVEIS PARA NÃO FICAREM SALVA CASO PRECISE REPITIR O PROCESSO#
             novosaldo = 0
+            continuar = 0
             #-------------------------------------------------------------------------------------#
             contaadd = input('Digite o numero da conta: ')
             for i, x in dados.items():
@@ -33,58 +37,64 @@ if __name__ == '__main__':
                     senhaadd = input('Digite sua senha:')
                     if cryp.verify(senhaadd,senha):
                         continuar = 1
-                        while continuar == 1:
-                            alterardados = i
-                            alterar = 1
-                            print(f'Seja bem vindo(a) {nome}')
-                            print("1- Realizar um saque")
-                            print("2- Fazer uma transferência")
-                            print("3- Pagar Boleto")
-                            print("4- Exibir Saldo")
-                            print("5- Realizar um depósito")
-                            print("6- Exibir meus dados")
-                            print("0- Sair")
-                            menu = int(input('Opção: '))
-                            if menu == 3:
-                                #O sistema aceita qualquer código que inserir e o valor do boleto é gerado de forma aleatoria entre 100 e 10.000
-                                boleto = input('Código do boleto: ')
-                                boletovalor = randint(100,1000) #Para alterar o valor gerado pelo boleto, edite os numeros : (100,1000)
-                                boletovalor = float(boletovalor)
-                                print(f'Valor do boleto: R${boletovalor}')
-                                if boletovalor > saldo:
-                                    print("Seu saldo não é o suficiente para pagar esse boleto")
-                                else:
-                                    saldo = saldo - boletovalor
-                                    novosaldo = saldo
-                                    print(f'Boleto pago com sucesso, seu novo saldo é R${saldo}')
-                            if menu == 4:
-                                print("|----------SALDO ATUAL----------|")
-                                print(f'|Saldo: {saldo}')
-                                print("|-------------------------------|")
-                            if menu == 5:
-                                print("|-------------------------------|")
-                                print("Utilize ponto '.' para seperar, caso queira adicionar valores quebrados")
-                                depositar = float(input('Valor do deposito: R$ '))
-                                saldo = float(saldo)
-                                saldo = depositar + saldo
-                                print(f'Valor de R${depositar} foi adicionado a conta.')
-                                print(f'Novo valor: {saldo}')
-                                novosaldo = saldo
-                            if menu == 0:
-                                continuar = 0
+                        contalogin = i
+                        nomelogin,senhalogin,rglogin,cpflogin,emaillogin,telefonelogin,saldologin = x
                     else:
                         print("Senha incorreta, tente novamente")
-            #-----------------------------IMPORTANTE---------------------------------------------#
-            #Nessa área, os valores alterados devem ser enviados para a biblioteca para depois ser enviados para o arquivo
-            #Durante as alterações, é salvo o nome da conta na variavel "alterardados" e os outros novos valores em outros variaveis
-            #Após isso, é utilizado um 'for' para procurar o valor salvo em "alterardados" e depois é repassado o valor para biblioteca
-            if alterar == 1:
-                for i, x in dados.items():
-                    if i == alterardados:
-                        nome,senha,rg,cpf, email, telefone, saldo = x
-                adicionar = {alterardados: (nome, senha, rg, cpf, email, telefone, novosaldo)}
-            dados.update(adicionar)
-            modules.escrevendo(dados)
+            #------------------------------------------------------------------------------------#
+            if continuar == 1:
+                saldologin = float(saldologin)
+                os.system('cls' if os.name == 'nt' else 'clear')
+                while continuar == 1:
+                    print(f'Seja bem vindo {nomelogin}')
+                    print("Seleciona uma operação: ")
+                    print("1- Exibir minhas informações")
+                    print("2- Realizar um depósito")
+                    print("3- Realizar uma transferência")
+                    print("0- Sair")
+                    menulogin = int(input('Opção: '))
+                    if menulogin == 1:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print("====================================================")
+                        print(f'Nome: {nomelogin}')
+                        print(f'RG: {rglogin}')
+                        print(f'CPF: {cpflogin}')
+                        print(f'Telefone: {telefonelogin}')
+                        print(f'Email cadastrado: {emaillogin}')
+                        print(f'Saldo: R${saldologin}')
+                        print("=====================================================")
+                    if menulogin == 2:
+                        depositoadd = float(input('Insira o valor que deseja depositar: R$'))
+                        saldologin = depositoadd + saldologin
+                        adicionarlogin = {contalogin: (nomelogin,senhalogin,rglogin,cpflogin,emaillogin,telefonelogin,saldologin)}
+                        dados.update(adicionarlogin)
+                    if menulogin == 3:
+                        realizartransferencia = 0
+                        contatransfere = input('Digite o número da conta que deseja fazer a transferência: ')
+                        for i, x in dados.items():
+                            nome,senha,rg,cpf, email, telefone, saldo = x
+                            if cryp.verify(contatransfere,i):
+                                realizartransferencia = 1
+                        if realizartransferencia == 1:
+                            for y,z in dados.items():
+                                nome,senha,rg,cpf, email, telefone, saldo = z
+                                if cryp.verify(contatransfere,y):
+                                    valortransfere = float(input('Digite o valor: R$'))
+                                    if saldologin > valortransfere:
+                                        saldo = float(saldo)
+                                        totaltransfere = saldo + valortransfere
+                                        saldologin = saldologin - valortransfere
+                                        adicionar = {y: (nome, senha, rg, cpf, email, telefone, totaltransfere)}
+                                        adicionarlogin = {contalogin: (nomelogin,senhalogin,rglogin,cpflogin,emaillogin,telefonelogin,saldologin)}
+                                        dados.update(adicionar)
+                                        dados.update(adicionarlogin)
+                                    else:
+                                        print("=====================================================")
+                                        print("Saldo não corresponde ao valor introduzido")
+                        else:
+                            print("Conta não encontrada, tente novamente")
+                    if menulogin == 0:
+                        continuar = 0
             #-----------------------------IMPORTANTE---------------------------------------------#
         if menu == 2:
             modules.cadastrado(dados)
