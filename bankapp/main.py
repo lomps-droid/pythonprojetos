@@ -5,12 +5,10 @@ import scripts
 
 
 #Adicionando usuários a tabela
-u1 = {8899:("Alexandre Douglas",1546,"xand.douglass@gmail.com","046.309.605-38",158000)}
 u2 = {6899:("Leandro Oliveira",1234,"leo.oliveira@gmail.com","337.876.810-00",13000)}
 u3 = {4899:("Luiz Antônio",1234,"luiz.antonio@gmail.com","500.377.080-40",43750)}
 u4 = {9899:("Felipe Loz",1234,"felipe.loz@gmail.com","329.600.560-94",90000)}
 
-scripts.users.update(u1)
 scripts.users.update(u2)
 scripts.users.update(u3)
 scripts.users.update(u4)
