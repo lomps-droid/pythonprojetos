@@ -20,12 +20,6 @@ def db_create():
     'cpf STR,'
     'email STR'
     ')')
-    #########################
-    #Adicionando usuário de admin para didática
-    #cursor.execute('INSERT INTO clients (nome, account, password, cpf, email) VALUES ("Admin",0,0,"Vazio","Vazio")')
-    #Executando comando dentro da tabela
-    ########################
-    #conexao.commit()
     #Fechando tabela
     cursor.close()
     conexao.close()
